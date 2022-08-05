@@ -1,0 +1,16 @@
+main: com.elementalwoof.foods.ElementalFoods
+name: ElementalFoods
+version: 1.0
+description: Custom foods and drinks, as well as Crafting said foods and drinks!
+api-version: 1.19
+author: ElementalWoof
+permissions:
+    elementalfoods.command:
+        description: Allows you to use the command /foods to see what version the plugin is on
+    elementalfoods.reload:
+        description: Allows you to use the command /foods reload to reload the configuration
+commands:
+    foods:
+        description: Allows you to see what version of ElementalFoods the server is running, and to reload the configuration
+        permission: elementalfoods.command
+        usage: "Usage: /<command> [reload]"

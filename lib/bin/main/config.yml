@@ -1,0 +1,136 @@
+chat-prefix: "&3&l[&bElemental&cFoods&3&l]&7: &f"
+items:
+    cheese:
+        # Internal ID of the item (Players will not see this)
+        id: cheese
+        
+        # The minecraft material of the item (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html)
+        material: GOLD_INGOT
+        
+        # The displayed name of the item
+        display-name: Cheese Brick
+
+        # Lines of text displayed under the name when the item is hovered over
+        lore:                       
+        - 'A dairy product!'
+        
+        # How many half hunger bars get filled when eaten
+        food-value: 2
+        
+        # How much saturation it gives you (for reference, bread gives you 6.0)
+        saturation-value: 2.0
+        
+        # If false, the user will not be able to eat this item (useful for ingredients)
+        is-edible: true
+        
+        # If true, the user will still be able to eat this item, even if they aren't hungry. (Similar to honey bottles)
+        is-edible-when-full: false
+        
+        # If true, a drinking noise is played instead of an eating noise
+        is-drink: false
+        
+        # If true, the item will have the enchantment glint
+        is-glowing: false
+        
+        # The base pitch for the eating sound
+        sound-pitch-base: 1
+        
+        # The maximum randomness for the pitch of the eating sound
+        sound-pitch-range: 0.2
+        
+        # How you are meant to craft this item
+        crafting-recipe:
+            # If true, it doesn't matter where you put the required items, as long as they are there.
+            is-shapeless: true
+            shape:
+            - 'MS'
+            materials:
+                M: MILK_BUCKET
+                S: STICK
+                
+    golden_chicken:
+        id: golden_chicken
+        material: cooked_chicken
+        display-name: '&6&lGold Flaked Chicken'
+        lore:
+        - 'A luxury item.'
+        - '&c&oSlightly worse than normal chicken...'
+        food-value: 4
+        saturation-value: 7.0
+        is-edible: true
+        is-edible-when-full: false
+        is-drink: false
+        is-glowing: true
+        sound-pitch-base: 1
+        sound-pitch-range: 0.2
+        crafting-recipe:
+            is-shapeless: false
+            shape:
+            - 'GGG'
+            - 'GKG'
+            - 'GGG'
+            materials:
+                G: GOLD_INGOT
+                K: COOKED_CHICKEN
+                
+    apple_juice:
+        id: apple_juice
+        material: POTION
+        # If the material is a potion, you can define the color here (RGB 0-255)
+        color:
+            red: 168
+            green: 20
+            blue: 60
+        display-name: 'Apple Juice'
+        lore:
+        - 'The sweet juice extracted from an apple.'
+        food-value: 2
+        saturation-value: 6.0
+        is-edible: true
+        is-edible-when-full: true
+        is-drink: true
+        is-glowing: false
+        sound-pitch-base: 1
+        sound-pitch-range: 0.2
+        crafting-recipe:
+            is-shapeless: true
+            shape:
+            - 'BAA'
+            - 'AS'
+            materials:
+                B: GLASS_BOTTLE
+                A: APPLE
+                S: SUGAR
+                
+    plain_hamburger:
+        id: plain_hamburger
+        material: PLAYER_HEAD
+        # If the material is a PLAYER_HEAD you can define the texture here
+        # To find a good texture, follow these steps:
+        #   1) Go here https://minecraft-heads.com/custom-heads
+        #   2) Search for an appropriate head and click on it
+        #   3) Scroll to the bottom of the page for that head
+        #   4) Copy the text inside of the box labeled "Minecraft-URL"
+        #   5) Paste that text here
+        texture: 5fb48e2b969c4c1b86c5f82a2e23799f4a6f31ce009a5f92b39f5b25057b2dd0
+        display-name: '&6&lHamburger'
+        lore:
+        - 'A backyard special.'
+        food-value: 10
+        saturation-value: 8.0
+        is-edible: true
+        is-edible-when-full: false
+        is-drink: false
+        is-glowing: false
+        sound-pitch-base: 0.85
+        sound-pitch-range: 0.15
+        crafting-recipe:
+            is-shapeless: false
+            shape:
+            - ' B'
+            - 'CM'
+            - ' B'
+            materials:
+                B: BREAD
+                C: cheese # it is possible to use custom items here, although make sure it exactly matches the `id` (it's case sensitive)
+                M: COOKED_BEEF
