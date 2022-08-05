@@ -105,9 +105,17 @@ public class CustomRecipe
 			}
 			
 			recipeChoices.forEach((Character key, RecipeChoice choice) -> {
-				for(int i = 0; i < ingredientCount.getOrDefault(ingredientCount, 1); i++)
+				if(choice instanceof RecipeChoice.MaterialChoice) 
 				{
-					r.addIngredient(choice);
+					RecipeChoice.MaterialChoice matChoice = (RecipeChoice.MaterialChoice)choice;
+					r.addIngredient(ingredientCount.getOrDefault(key, 1), matChoice.getChoices().get(0));
+				}
+				else
+				{
+					for(int i = 0; i < ingredientCount.getOrDefault(key, 1); i++)
+					{
+						r.addIngredient(choice);
+					}
 				}
 			});
 		}

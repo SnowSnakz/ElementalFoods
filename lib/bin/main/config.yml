@@ -24,6 +24,7 @@ items:
         is-edible: true
         
         # If true, the user will still be able to eat this item, even if they aren't hungry. (Similar to honey bottles)
+        # NOTE: If the player is not hungry, the item will be consumed instantly.
         is-edible-when-full: false
         
         # If true, a drinking noise is played instead of an eating noise
@@ -37,6 +38,10 @@ items:
         
         # The maximum randomness for the pitch of the eating sound
         sound-pitch-range: 0.2
+        
+        # Only produces a noticeable effect if the specified material is already a food item, 
+        # if true the item will be consumed immedietely instead of doing the eating animation.
+        instant-eat: true
         
         # How you are meant to craft this item
         crafting-recipe:
@@ -63,6 +68,7 @@ items:
         is-glowing: true
         sound-pitch-base: 1
         sound-pitch-range: 0.2
+        instant-eat: true
         crafting-recipe:
             is-shapeless: false
             shape:
@@ -92,6 +98,7 @@ items:
         is-glowing: false
         sound-pitch-base: 1
         sound-pitch-range: 0.2
+        instant-eat: true
         crafting-recipe:
             is-shapeless: true
             shape:
@@ -124,6 +131,7 @@ items:
         is-glowing: false
         sound-pitch-base: 0.85
         sound-pitch-range: 0.15
+        instant-eat: true
         crafting-recipe:
             is-shapeless: false
             shape:
