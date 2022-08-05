@@ -60,21 +60,87 @@ class PlayerEvents implements Listener
 		
 		ItemStack item = event.getItem();
 		if(item == null) return;
-		
-		if(!plugin.ensureItemInMainHand(player, item, true))
-		{
-			event.setCancelled(true);
-			return;
-		}
-		
+
 		if(plugin.isManaged(item)) 
 		{
+			Material itemType = item.getType();
+			
+			if(event.getClickedBlock() != null) 
+			{
+				Material clickedType = event.getClickedBlock().getType();
+				switch(clickedType) 
+				{
+				default:
+					break;
+					
+				case LODESTONE:
+					// Prevents custom compasses from being aligned to lodestones
+					if(itemType == Material.COMPASS) 
+					{
+						event.setCancelled(true);
+					}
+					break;
+					
+				case RESPAWN_ANCHOR:
+					// Prevents custom glowstone from being accepted into respawn anchors
+					if(itemType == Material.GLOWSTONE) 
+					{
+						event.setCancelled(true);
+					}
+					break;
+					
+				case JUKEBOX:
+					// Prevents custom records from being accepted into jukeboxes
+					if(itemType.isRecord()) 
+					{
+						event.setCancelled(true);
+					}
+					break;
+					
+				// Allow blocks with a GUI to be opened
+				case CRAFTING_TABLE:
+				case CARTOGRAPHY_TABLE:
+				case SMITHING_TABLE:
+				case FLETCHING_TABLE: // Although this block does not have a GUI yet, it probably will have one eventually.
+				case FURNACE:
+				case BLAST_FURNACE:
+				case SMOKER:
+				case LOOM:
+				case BREWING_STAND:
+				case STONECUTTER:
+				case GRINDSTONE:
+				case CHEST:
+				case BARREL:
+				case ANVIL:
+					// Preserve Interactions
+					return;
+					
+				case CAULDRON:
+					// Prevent players from filling cauldron with custom water buckets and prevents cauldron from filling custom bottles
+					if(itemType == Material.WATER_BUCKET || itemType == Material.GLASS_BOTTLE) 
+					{
+						event.setCancelled(true);
+					}
+					
+					// Prevent players from washing custom leather items
+					if(itemType == Material.LEATHER_BOOTS || itemType == Material.LEATHER_CHESTPLATE || itemType == Material.LEATHER_HELMET || itemType == Material.LEATHER_LEGGINGS || itemType == Material.LEATHER_HORSE_ARMOR)
+					{
+						event.setCancelled(true);
+					}
+					break;
+				}
+			}
+			
+			if(!plugin.ensureItemInMainHand(player, item, true))
+			{
+				event.setCancelled(true);
+				return;
+			}
+		
 			CustomItem ci = plugin.getFromStack(item);
 			
-			boolean canEatRightNow = !item.getType().isEdible();
-			canEatRightNow &= player.getFoodLevel() < 20;
-			
-			canEatRightNow |= item.getType() != Material.POTION;
+			boolean canEatRightNow = item.getType().isEdible() || item.getType() == Material.POTION;
+			canEatRightNow = !(canEatRightNow && (player.getFoodLevel() < 20));
 			canEatRightNow |= ci.instantEat;
 			
 			if(canEatRightNow)
