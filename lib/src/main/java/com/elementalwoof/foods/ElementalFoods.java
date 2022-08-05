@@ -8,7 +8,10 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -50,6 +53,90 @@ public class ElementalFoods extends JavaPlugin
 					{
 						player.discoverRecipe(ci.recipeKey);
 					}
+				}
+			}
+		}
+	}
+	
+	boolean ensureItemInMainHand(Player player, ItemStack item, boolean sendWarning)
+	{
+		boolean result = true;
+		if(isManaged(item)) 
+		{
+			if(player.getInventory().getItemInOffHand().isSimilar(item))
+			{
+				result = false;
+			}
+			if(!player.getInventory().getItemInMainHand().isSimilar(item))
+			{
+				result = false;
+			}
+		}
+		
+		if(sendWarning && !result) 
+		{
+			player.sendMessage(pluginPrefix + "\u00a7cCustom food items can only be consumed while in your main hand!");
+		}
+		
+		return result;
+	}
+	
+	void feedPlayer(Player player, ItemStack item, CustomItem ci) 
+	{
+		boolean doEat = false;
+		if(player.getFoodLevel() < 20)
+		{
+			if(ci.isEdible) 
+			{
+				doEat = true;
+			}
+		}
+		else
+		{
+			if(ci.canEatWhenFull)
+			{
+				doEat = true;
+			}
+		}
+		
+		if(doEat) 
+		{
+			int newFoodValue = ci.foodValue;
+			float newSaturationValue = ci.saturationValue;
+
+			player.setFoodLevel(player.getFoodLevel() + newFoodValue);
+			player.setSaturation(player.getSaturation() + newSaturationValue);
+			
+			Sound eatSound = Sound.ENTITY_GENERIC_EAT;
+			
+			if(ci.makesDrinkingNoise) 
+			{
+				eatSound = Sound.ENTITY_GENERIC_DRINK;
+			}
+
+			player.playSound(player, eatSound, SoundCategory.PLAYERS, 1f, ci.eatPitchBase + (rng.nextFloat() * ci.eatPitchRange) - (ci.eatPitchRange * 0.5f));
+			
+			if(item.getAmount() - 1 <= 0) 
+			{
+				if(item.getType() == Material.POTION)
+				{
+					player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
+				}
+				else
+				{
+					player.getInventory().setItemInMainHand(null);
+				}
+			}
+			else
+			{
+				if(item.getType() == Material.POTION)
+				{
+					player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
+				}
+				else
+				{
+					item.setAmount(item.getAmount() - 1);
+					player.getInventory().setItemInMainHand(item);
 				}
 			}
 		}

@@ -1,8 +1,6 @@
 package com.elementalwoof.foods;
 
 import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,127 +35,20 @@ class PlayerEvents implements Listener
 		ItemStack item = event.getItem();
 		if(item == null) return;
 
-		if(player.getInventory().getItemInOffHand().isSimilar(item))
+		if(!plugin.ensureItemInMainHand(player, item, true))
 		{
-			if(plugin.isManaged(item)) 
-			{
-				player.sendMessage(plugin.pluginPrefix + "\u00a7cCustom food items can only be consumed while in your main hand!");
-				event.setCancelled(true);
-				return;
-			}
+			event.setCancelled(true);
+			return;
 		}
-		
-		if(!player.getInventory().getItemInMainHand().isSimilar(item))
-		{
-			if(plugin.isManaged(item)) 
-			{
-				player.sendMessage(plugin.pluginPrefix + "\u00a7cCustom food items can only be consumed while in your main hand!");
-				event.setCancelled(true);
-				return;
-			}
-		}
-		
-		item = player.getInventory().getItemInMainHand();
 		
 		if(plugin.isManaged(item)) 
 		{
 			event.setCancelled(true);
 			
 			CustomItem ci = plugin.getFromStack(item);
+			if(ci == null) return;
 			
-			if(ci == null) 
-			{
-				return;
-			}
-			
-			if(event.getPlayer().getFoodLevel() < 20)
-			{
-				if(ci.isEdible) 
-				{
-					int newFoodValue = ci.foodValue;
-					float newSaturationValue = ci.saturationValue;
-
-					player.setFoodLevel(player.getFoodLevel() + newFoodValue);
-					player.setSaturation(player.getSaturation() + newSaturationValue);
-					
-					if(item.getAmount() - 1 <= 0) 
-					{
-						if(item.getType() == Material.POTION)
-						{
-							player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-						}
-						else
-						{
-							player.getInventory().setItemInMainHand(null);
-						}
-					}
-					else
-					{
-						if(item.getType() == Material.POTION)
-						{
-							player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-						}
-						else
-						{
-							item.setAmount(item.getAmount() - 1);
-							player.getInventory().setItemInMainHand(item);
-						}
-					}
-
-					Sound eatSound = Sound.ENTITY_GENERIC_EAT;
-					
-					if(ci.makesDrinkingNoise) 
-					{
-						eatSound = Sound.ENTITY_GENERIC_DRINK;
-					}
-
-					player.playSound(player, eatSound, SoundCategory.PLAYERS, 1f, ci.eatPitchBase + (plugin.rng.nextFloat() * ci.eatPitchRange) - (ci.eatPitchRange * 0.5f));
-				}
-			}
-			else
-			{
-				if(ci.canEatWhenFull)
-				{
-					int newFoodValue = ci.foodValue;
-					float newSaturationValue = ci.saturationValue;
-
-					player.setFoodLevel(player.getFoodLevel() + newFoodValue);
-					player.setSaturation(player.getSaturation() + newSaturationValue);
-					
-					if(item.getAmount() - 1 <= 0) 
-					{
-						if(item.getType() == Material.POTION)
-						{
-							player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-						}
-						else
-						{
-							player.getInventory().setItemInMainHand(null);
-						}
-					}
-					else
-					{
-						if(item.getType() == Material.POTION)
-						{
-							player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-						}
-						else
-						{
-							item.setAmount(item.getAmount() - 1);
-							player.getInventory().setItemInMainHand(item);
-						}
-					}
-					
-					Sound eatSound = Sound.ENTITY_GENERIC_EAT;
-					
-					if(ci.makesDrinkingNoise) 
-					{
-						eatSound = Sound.ENTITY_GENERIC_DRINK;
-					}
-
-					player.playSound(player, eatSound, SoundCategory.PLAYERS, 1f, ci.eatPitchBase + (plugin.rng.nextFloat() * ci.eatPitchRange) - (ci.eatPitchRange * 0.5f));
-				}
-			}
+			plugin.feedPlayer(player, item, ci);
 		}
 	}
 	
@@ -170,24 +61,10 @@ class PlayerEvents implements Listener
 		ItemStack item = event.getItem();
 		if(item == null) return;
 		
-		if(player.getInventory().getItemInOffHand().isSimilar(item))
+		if(!plugin.ensureItemInMainHand(player, item, true))
 		{
-			if(plugin.isManaged(item)) 
-			{
-				player.sendMessage(plugin.pluginPrefix + "\u00a7cCustom food items can only be consumed while in your main hand!");
-				event.setCancelled(true);
-				return;
-			}
-		}
-		
-		if(!player.getInventory().getItemInMainHand().isSimilar(item))
-		{
-			if(plugin.isManaged(item)) 
-			{
-				player.sendMessage(plugin.pluginPrefix + "\u00a7cCustom food items can only be consumed while in your main hand!");
-				event.setCancelled(true);
-				return;
-			}
+			event.setCancelled(true);
+			return;
 		}
 		
 		if(plugin.isManaged(item)) 
@@ -203,95 +80,7 @@ class PlayerEvents implements Listener
 			if(canEatRightNow)
 			{
 				event.setCancelled(true);
-				
-				if(event.getPlayer().getFoodLevel() < 20)
-				{
-					if(ci.isEdible) 
-					{
-						int newFoodValue = ci.foodValue;
-						float newSaturationValue = ci.saturationValue;
-	
-						player.setFoodLevel(player.getFoodLevel() + newFoodValue);
-						player.setSaturation(player.getSaturation() + newSaturationValue);
-						
-						Sound eatSound = Sound.ENTITY_GENERIC_EAT;
-						
-						if(ci.makesDrinkingNoise) 
-						{
-							eatSound = Sound.ENTITY_GENERIC_DRINK;
-						}
-	
-						player.playSound(player, eatSound, SoundCategory.PLAYERS, 1f, ci.eatPitchBase + (plugin.rng.nextFloat() * ci.eatPitchRange) - (ci.eatPitchRange * 0.5f));
-						
-						if(item.getAmount() - 1 <= 0) 
-						{
-							if(item.getType() == Material.POTION)
-							{
-								player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-							}
-							else
-							{
-								player.getInventory().setItemInMainHand(null);
-							}
-						}
-						else
-						{
-							if(item.getType() == Material.POTION)
-							{
-								player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-							}
-							else
-							{
-								item.setAmount(item.getAmount() - 1);
-								player.getInventory().setItemInMainHand(item);
-							}
-						}
-					}
-				}
-				else
-				{
-					if(ci.canEatWhenFull)
-					{
-						int newFoodValue = ci.foodValue;
-						float newSaturationValue = ci.saturationValue;
-	
-						player.setFoodLevel(player.getFoodLevel() + newFoodValue);
-						player.setSaturation(player.getSaturation() + newSaturationValue);
-						
-						Sound eatSound = Sound.ENTITY_GENERIC_EAT;
-						
-						if(ci.makesDrinkingNoise) 
-						{
-							eatSound = Sound.ENTITY_GENERIC_DRINK;
-						}
-	
-						player.playSound(player, eatSound, SoundCategory.PLAYERS, 1f, ci.eatPitchBase + (plugin.rng.nextFloat() * ci.eatPitchRange) - (ci.eatPitchRange * 0.5f));
-					
-						if(item.getAmount() - 1 <= 0) 
-						{
-							if(item.getType() == Material.POTION)
-							{
-								player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-							}
-							else
-							{
-								player.getInventory().setItemInMainHand(null);
-							}
-						}
-						else
-						{
-							if(item.getType() == Material.POTION)
-							{
-								player.getInventory().setItemInMainHand(new ItemStack(Material.GLASS_BOTTLE));
-							}
-							else
-							{
-								item.setAmount(item.getAmount() - 1);
-								player.getInventory().setItemInMainHand(item);
-							}
-						}
-					}
-				}
+				plugin.feedPlayer(player, item, ci);
 			}
 		}
 	}
