@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -148,18 +149,35 @@ public class CustomItem
 			
 			referenceItem = new ItemStack(m);
 			
-			if(m == Material.POTION || m == Material.LINGERING_POTION || m == Material.SPLASH_POTION) 
+			boolean hasColor = cfg.contains("color");
+			if(hasColor)
 			{
-				PotionMeta meta = (PotionMeta)referenceItem.getItemMeta();
-				
 				int r, g, b;
 				r = cfg.getInt("color.red");
 				g = cfg.getInt("color.green");
 				b = cfg.getInt("color.blue");
 				
-				meta.setColor(Color.fromBGR(b, g, r));
-				
-				referenceItem.setItemMeta(meta);
+				switch(m)
+				{
+				case POTION:
+	
+					PotionMeta potionMeta = (PotionMeta)referenceItem.getItemMeta();
+					
+					potionMeta.setColor(Color.fromBGR(b, g, r));
+					referenceItem.setItemMeta(potionMeta);
+					break;
+					
+				case LEATHER_BOOTS:
+				case LEATHER_LEGGINGS:
+				case LEATHER_CHESTPLATE:
+				case LEATHER_HELMET:
+				case LEATHER_HORSE_ARMOR:
+					LeatherArmorMeta letherMeta = (LeatherArmorMeta)referenceItem.getItemMeta();
+					
+					letherMeta.setColor(Color.fromBGR(b, g, r));
+					referenceItem.setItemMeta(letherMeta);
+					break;
+				}
 			}
 		}
 		

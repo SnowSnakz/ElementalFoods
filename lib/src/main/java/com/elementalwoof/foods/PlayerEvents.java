@@ -139,6 +139,12 @@ class PlayerEvents implements Listener
 		
 			CustomItem ci = plugin.getFromStack(item);
 			
+			if(ci == null) 
+			{
+				event.setCancelled(true);
+				return;
+			}
+			
 			boolean canEatRightNow = item.getType().isEdible() || item.getType() == Material.POTION;
 			canEatRightNow = !(canEatRightNow && (player.getFoodLevel() < 20));
 			canEatRightNow |= ci.instantEat;
