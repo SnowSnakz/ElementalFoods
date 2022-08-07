@@ -42,3 +42,7 @@ dependencies {
 	compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT' // The Spigot API with no shadowing. Requires the OSS repo.
 }
 
+java {
+    sourceCompatibility = "1.17"
+    targetCompatibility = "1.18"
+}
