@@ -44,5 +44,5 @@ dependencies {
 
 java {
     sourceCompatibility = "1.17"
-    targetCompatibility = "1.18"
+    targetCompatibility = "1.17"
 }
