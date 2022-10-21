@@ -73,11 +73,11 @@ class FoodsCommand implements CommandExecutor
 							String foodId = args[2];
 							int amount = 1;
 							
-							if(args.length >= 3) 
+							if(args.length >= 4) 
 							{
 								try 
 								{
-									amount = Integer.parseInt(args[2]);
+									amount = Integer.parseInt(args[3]);
 								}
 								catch(NumberFormatException nfex)
 								{
