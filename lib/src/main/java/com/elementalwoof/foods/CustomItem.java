@@ -177,6 +177,9 @@ public class CustomItem
 					letherMeta.setColor(Color.fromBGR(b, g, r));
 					referenceItem.setItemMeta(letherMeta);
 					break;
+					
+				default:
+					break;
 				}
 			}
 		}
