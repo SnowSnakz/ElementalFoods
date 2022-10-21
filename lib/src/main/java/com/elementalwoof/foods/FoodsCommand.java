@@ -1,14 +1,18 @@
 package com.elementalwoof.foods;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-class FoodsCommand implements CommandExecutor
+class FoodsCommand implements CommandExecutor, TabCompleter
 {
 	ElementalFoods plugin;
 	
@@ -122,5 +126,108 @@ class FoodsCommand implements CommandExecutor
 		}
 		
 		return true;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) 
+	{
+		List<String> completions = new ArrayList<>();
+		
+		if(!sender.hasPermission("elementalfoods.command")) 
+		{
+			return completions;
+		}
+		
+		if(args.length == 0) 
+		{
+			if(sender.hasPermission("elementalfoods.reload")) 
+			{
+				completions.add("reload");
+			}
+			
+			if(sender.hasPermission("elementalfoods.command.give")) 
+			{
+				completions.add("give");
+			}
+		}
+		else 
+		{
+			if(args.length == 1) 
+			{
+				switch(args[0].toLowerCase().charAt(0)) 
+				{
+				default: 
+					completions.add("give");
+					completions.add("reload");
+					break;
+				
+				case 'r':
+					completions.add("reload");
+					break;
+					
+				case 'g':
+					completions.add("give");
+					break;
+				}
+			}
+			else
+			{
+				if(args[0].equalsIgnoreCase("give"))
+				{
+					if(!sender.hasPermission("elementalfoods.command.give"))
+					{
+						return completions;
+					}
+					
+					switch(args.length) 
+					{
+					default:
+						break;
+						
+					case 2:
+						if(args[1].isBlank()) 
+						{
+							for(Player p : Bukkit.getOnlinePlayers()) 
+							{
+								completions.add(p.getName());
+							}
+						}
+						else
+						{
+							for(Player p : Bukkit.getOnlinePlayers()) 
+							{
+								if(p.getName().toLowerCase().startsWith(args[1].toLowerCase()))
+								{
+									completions.add(p.getName());
+								}
+							}
+						}
+						break;
+						
+					case 3:
+						if(args[2].isBlank()) 
+						{
+							for(String itemId : plugin.customItems.keySet()) 
+							{
+								completions.add(itemId);
+							}
+						}
+						else 
+						{
+							for(String itemId : plugin.customItems.keySet()) 
+							{
+								if(itemId.toLowerCase().startsWith(args[2].toLowerCase()))
+								{
+									completions.add(itemId);
+								}
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		
+		return completions;
 	}
 }
