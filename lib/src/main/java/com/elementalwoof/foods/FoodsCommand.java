@@ -138,7 +138,7 @@ class FoodsCommand implements CommandExecutor, TabCompleter
 			return completions;
 		}
 		
-		if(args.length == 0) 
+		if(args.length <= 0) 
 		{
 			if(sender.hasPermission("elementalfoods.reload")) 
 			{
@@ -154,20 +154,28 @@ class FoodsCommand implements CommandExecutor, TabCompleter
 		{
 			if(args.length == 1) 
 			{
-				switch(args[0].toLowerCase().charAt(0)) 
+				if(args[0].isBlank()) 
 				{
-				default: 
 					completions.add("give");
 					completions.add("reload");
-					break;
-				
-				case 'r':
-					completions.add("reload");
-					break;
+				}
+				else
+				{
+					switch(args[0].toLowerCase().charAt(0)) 
+					{
+					default:
+						completions.add("give");
+						completions.add("reload");
+						break;
 					
-				case 'g':
-					completions.add("give");
-					break;
+					case 'r':
+						completions.add("reload");
+						break;
+						
+					case 'g':
+						completions.add("give");
+						break;
+					}
 				}
 			}
 			else
