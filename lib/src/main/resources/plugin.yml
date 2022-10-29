@@ -10,7 +10,7 @@ permissions:
     elementalfoods.reload:
         description: Allows you to use the command /foods reload to reload the configuration
     elementalfoods.command.give:
-    	description: Allows you to use the command /foods give to give players custom food without crafting.
+        description: Allows you to use the command /foods give to give players custom food without crafting.
 commands:
     foods:
         description: Allows you to see what version of ElementalFoods the server is running, and to reload the configuration
