@@ -32,7 +32,7 @@ public class CustomItem
 	
 	String itemId;
 	String headTexture;
-	String[] commands;
+	List<String> commands;
 	
 	int foodValue;
 	float saturationValue;
@@ -86,28 +86,7 @@ public class CustomItem
 			}
 		}
 		
-		List<String> cfgCommands = cfg.getStringList("commands");
-		if(cfgCommands != null) 
-		{
-			commands = new String[cfgCommands.size()];
-			
-			int si = 0;
-			for(String cmd : cfgCommands)
-			{
-				if(cmd.startsWith("/")) 
-				{
-					commands[si++] = cmd;
-				}
-				else
-				{
-					commands[si++] = cmd.substring(1);
-				}
-			}
-		}
-		else
-		{
-			commands = new String[0];
-		}
+		commands = cfg.getStringList("commands");
 		
 		foodValue = cfg.getInt("food-value");
 		saturationValue = (float)cfg.getDouble("saturation-value"); // Why isn't there a `cfg.getFloat()`...?

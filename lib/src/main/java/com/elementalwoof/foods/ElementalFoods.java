@@ -23,6 +23,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 
 public class ElementalFoods extends JavaPlugin
@@ -40,6 +41,20 @@ public class ElementalFoods extends JavaPlugin
 	FoodsCommand command;
 	
 	Random rng;
+	
+	boolean hasPlaceholderApi;
+	
+	String setPlaceholders(String input, Player player) 
+	{
+		if(hasPlaceholderApi) 
+		{
+			return PlaceholderAPI.setPlaceholders(player, input);
+		}
+		else
+		{
+			return input.replace("%player%", player.getName());
+		}
+	}
 	
 	void ensureUnlocks(Player player) 
 	{
@@ -114,6 +129,37 @@ public class ElementalFoods extends JavaPlugin
 				eatSound = Sound.ENTITY_GENERIC_DRINK;
 			}
 
+			if(ci.commands != null)
+			{
+				for(String cmd : ci.commands)
+				{
+					String rcmd = cmd;
+					boolean asPlayer = true;
+					
+					if(cmd.startsWith("srv:"))
+					{
+						rcmd = cmd.substring(4);
+						asPlayer = false;
+					}
+					else if(cmd.startsWith("plr:"))
+					{
+						rcmd = cmd.substring(4);
+						asPlayer = true;
+					}
+					
+					rcmd = setPlaceholders(rcmd, player);
+					
+					if(asPlayer) 
+					{
+						Bukkit.dispatchCommand(player, rcmd);
+					}
+					else 
+					{
+						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), rcmd);
+					}
+				}
+			}
+			
 			player.playSound(player, eatSound, SoundCategory.PLAYERS, 1f, ci.eatPitchBase + (rng.nextFloat() * ci.eatPitchRange) - (ci.eatPitchRange * 0.5f));
 			
 			if(item.getAmount() - 1 <= 0) 
@@ -226,9 +272,11 @@ public class ElementalFoods extends JavaPlugin
 		
 		pluginPrefix = cfg.getString("chat-prefix", pluginPrefix);
 		pluginPrefix = ChatColor.translateAlternateColorCodes('&', pluginPrefix);
+
+		hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 		
 		Set<NamespacedKey> previousRecipes = new HashSet<>();
-
+		
 		for(CustomItem ci : customItems.values()) 
 		{
 			if(ci.recipe != null) 
@@ -312,9 +360,18 @@ public class ElementalFoods extends JavaPlugin
 			}
 		}
 		
+		boolean autoUnlockRecipes = true;
+		if(cfg.contains("unlock-recipes-on-join"))
+		{
+			autoUnlockRecipes = cfg.getBoolean("unlock-recipes-on-join");
+		}
+		
 		for(Player player : Bukkit.getOnlinePlayers()) 
 		{
-			ensureUnlocks(player);
+			if(autoUnlockRecipes)
+			{
+				ensureUnlocks(player);
+			}
 			
 			for(NamespacedKey removedRecipe : removedRecipes) 
 			{

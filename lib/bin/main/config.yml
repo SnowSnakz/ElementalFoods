@@ -1,4 +1,5 @@
 chat-prefix: "&3&l[&bElemental&cFoods&3&l]&7: &f"
+unlock-recipes-on-join: true
 items:
     cheese:
         # Internal ID of the item (Players will not see this)
@@ -134,6 +135,37 @@ items:
         is-edible: true
         is-edible-when-full: false
         is-drink: false
+        is-glowing: false
+        sound-pitch-base: 0.85
+        sound-pitch-range: 0.15
+        instant-eat: true
+        crafting-recipe:
+            is-shapeless: false
+            shape:
+            - ' B'
+            - 'CM'
+            - ' B'
+            materials:
+                B: BREAD
+                C: cheese # it is possible to use custom items here, although make sure it exactly matches the `id` (it's case sensitive)
+                M: COOKED_BEEF
+
+    coffee:
+        id: coffee
+        material: potion
+        show-food-value: false
+        color:
+            red: 120
+            green: 76
+            blue: 58
+        display-name: '&6&lCoffee'
+        lore:
+        - 'Energetic.'
+        food-value: 0
+        saturation-value: 2.0
+        is-edible: true
+        is-edible-when-full: true
+        is-drink: true
         is-glowing: false
         sound-pitch-base: 0.85
         sound-pitch-range: 0.15
