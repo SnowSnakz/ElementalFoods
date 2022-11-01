@@ -43,6 +43,7 @@ public class ElementalFoods extends JavaPlugin
 	Random rng;
 	
 	boolean hasPlaceholderApi;
+	boolean unlockRecipesOnJoin;
 	
 	String setPlaceholders(String input, Player player) 
 	{
@@ -58,6 +59,8 @@ public class ElementalFoods extends JavaPlugin
 	
 	void ensureUnlocks(Player player) 
 	{
+		if(!unlockRecipesOnJoin) return;
+		
 		for(CustomItem ci : customItems.values()) 
 		{
 			if(ci.recipe != null)
@@ -360,18 +363,15 @@ public class ElementalFoods extends JavaPlugin
 			}
 		}
 		
-		boolean autoUnlockRecipes = true;
+		unlockRecipesOnJoin = true;
 		if(cfg.contains("unlock-recipes-on-join"))
 		{
-			autoUnlockRecipes = cfg.getBoolean("unlock-recipes-on-join");
+			unlockRecipesOnJoin = cfg.getBoolean("unlock-recipes-on-join");
 		}
 		
 		for(Player player : Bukkit.getOnlinePlayers()) 
 		{
-			if(autoUnlockRecipes)
-			{
-				ensureUnlocks(player);
-			}
+			ensureUnlocks(player);
 			
 			for(NamespacedKey removedRecipe : removedRecipes) 
 			{

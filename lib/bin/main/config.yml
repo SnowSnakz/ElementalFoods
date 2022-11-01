@@ -164,7 +164,7 @@ items:
         commands: # If you have PlaceholderAPI installed, you can use PlaceholderAPI here,
         # otherwise the only placeholder you can use is %player% which will be replaced with the players username.
         # start a command with srv: to execute the command as the server (this will also ignore player permissions)
-        - 'srv:effect give %player% minecraft:speed 10 2'
+        - 'srv:effect give %player% minecraft:speed 120 2'
         food-value: 0
         saturation-value: 2.0
         is-edible: true
