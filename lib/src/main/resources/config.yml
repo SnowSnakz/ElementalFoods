@@ -6,6 +6,9 @@ items:
         
         # The minecraft material of the item (https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html)
         material: GOLD_INGOT
+
+        # Shows a display of how many hunger bars this item will fill
+        show-food-value: true
         
         # The displayed name of the item
         display-name: Cheese Brick
@@ -56,6 +59,7 @@ items:
     golden_chicken:
         id: golden_chicken
         material: cooked_chicken
+        show-food-value: true
         display-name: '&6&lGold Flaked Chicken'
         lore:
         - 'A luxury item.'
@@ -82,6 +86,7 @@ items:
     apple_juice:
         id: apple_juice
         material: POTION
+        show-food-value: true
         # If the material is a potion, you can define the color here (RGB 0-255)
         color:
             red: 168
@@ -112,6 +117,7 @@ items:
     plain_hamburger:
         id: plain_hamburger
         material: PLAYER_HEAD
+        show-food-value: true
         # If the material is a PLAYER_HEAD you can define the texture here
         # To find a good texture, follow these steps:
         #   1) Go here https://minecraft-heads.com/custom-heads

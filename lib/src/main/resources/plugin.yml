@@ -1,6 +1,6 @@
 main: com.elementalwoof.foods.ElementalFoods
 name: ElementalFoods
-version: 1.2.0
+version: 1.3.0
 description: Custom foods and drinks, as well as Crafting said foods and drinks!
 api-version: 1.19
 author: ElementalWoof
@@ -16,3 +16,4 @@ commands:
         description: Allows you to see what version of ElementalFoods the server is running, and to reload the configuration
         permission: elementalfoods.command
         usage: "Usage: /<command> [give/reload] (<player> <food_id> [<amount>])"
+softdepend: [PlaceholderAPI]
