@@ -32,6 +32,7 @@ public class CustomItem
 	
 	String itemId;
 	String headTexture;
+	String[] commands;
 	
 	int foodValue;
 	float saturationValue;
@@ -83,6 +84,29 @@ public class CustomItem
 				loreLine = ChatColor.translateAlternateColorCodes('&', loreLine);
 				lore.set(i, loreLine);
 			}
+		}
+		
+		List<String> cfgCommands = cfg.getStringList("commands");
+		if(cfgCommands != null) 
+		{
+			commands = new String[cfgCommands.size()];
+			
+			int si = 0;
+			for(String cmd : cfgCommands)
+			{
+				if(cmd.startsWith("/")) 
+				{
+					commands[si++] = cmd;
+				}
+				else
+				{
+					commands[si++] = cmd.substring(1);
+				}
+			}
+		}
+		else
+		{
+			commands = new String[0];
 		}
 		
 		foodValue = cfg.getInt("food-value");
@@ -189,6 +213,22 @@ public class CustomItem
 		PersistentDataContainer pdc = meta.getPersistentDataContainer();
 		pdc.set(NamespacedKey.fromString("is_custom_item", plugin), PersistentDataType.BYTE, (byte)1);
 		pdc.set(NamespacedKey.fromString("custom_id", plugin), PersistentDataType.STRING, itemId);
+
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		
+		if(cfg.getBoolean("show-food-value"))
+		{
+			// \uD83C\uDF56 == Hunger Icon
+			String foodLore = "\u00A7f\uD83C\uDF56 " + (foodValue / 2);
+			
+			if(foodValue % 2 != 0)
+			{
+				// \u00BD = 1/2 as single unicode character.
+				foodLore += " + \u00BD";
+			}
+			
+			lore.add(foodLore);
+		}
 		
 		meta.setDisplayName(displayName);
 		if(lore != null) 
