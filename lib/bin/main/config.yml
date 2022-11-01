@@ -161,6 +161,10 @@ items:
         display-name: '&6&lCoffee'
         lore:
         - 'Energetic.'
+        commands: # If you have PlaceholderAPI installed, you can use PlaceholderAPI here,
+        # otherwise the only placeholder you can use is %player% which will be replaced with the players username.
+        # start a command with srv: to execute the command as the server (this will also ignore player permissions)
+        - 'srv:effect give %player% minecraft:speed 10 2'
         food-value: 0
         saturation-value: 2.0
         is-edible: true
@@ -171,12 +175,9 @@ items:
         sound-pitch-range: 0.15
         instant-eat: true
         crafting-recipe:
-            is-shapeless: false
+            is-shapeless: true
             shape:
-            - ' B'
-            - 'CM'
-            - ' B'
+            - 'BS'
             materials:
-                B: BREAD
-                C: cheese # it is possible to use custom items here, although make sure it exactly matches the `id` (it's case sensitive)
-                M: COOKED_BEEF
+                B: GLASS_BOTTLE
+                S: SUGAR
