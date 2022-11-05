@@ -198,8 +198,9 @@ public class ElementalFoods extends JavaPlugin
 	
 	public boolean isManaged(ItemStack stack) 
 	{
-		ItemMeta meta = stack.getItemMeta();
+		if(stack == null) return false;
 		
+		ItemMeta meta = stack.getItemMeta();
 		if(meta == null) return false;
 		
 		PersistentDataContainer pdc = meta.getPersistentDataContainer();
