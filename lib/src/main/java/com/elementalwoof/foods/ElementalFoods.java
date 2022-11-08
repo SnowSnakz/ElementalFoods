@@ -31,6 +31,8 @@ public class ElementalFoods extends JavaPlugin
 	Map<String, CustomItem> customItems;
 	Logger l;
 	
+	Metrics metrics;
+	
 	String pluginPrefix;
 	boolean hadErrors;
 	
@@ -241,6 +243,8 @@ public class ElementalFoods extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		metrics = new Metrics(this, 16831);
+		
 		pluginPrefix = "\u00a73\u00a7l[\u00a7bElemental\u00a7cFoods\u00a73\u00a7l]\u00a77: \u00a7f";
 		
 		customItems = new HashMap<>();
