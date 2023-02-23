@@ -1,6 +1,6 @@
 main: com.elementalwoof.foods.ElementalFoods
 name: ElementalFoods
-version: 1.4.0
+version: 1.4.1
 description: Custom foods and drinks, as well as Crafting said foods and drinks!
 api-version: 1.19
 author: ElementalWoof
