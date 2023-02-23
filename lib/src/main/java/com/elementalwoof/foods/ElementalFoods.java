@@ -338,6 +338,14 @@ public class ElementalFoods extends JavaPlugin
 			
 			if(ci.recipe != null) 
 			{
+				if(ci.recipeKey == null)
+				{
+					if(ci.recipe.key == null)
+						continue;
+					
+					ci.recipeKey = ci.recipe.key;
+				}
+				
 				if(Bukkit.getRecipe(ci.recipeKey) != null) 
 				{
 					Bukkit.removeRecipe(ci.recipeKey);
