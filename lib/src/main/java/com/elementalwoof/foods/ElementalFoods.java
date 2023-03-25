@@ -278,6 +278,15 @@ public class ElementalFoods extends JavaPlugin
 		saveDefaultConfig();
 		reloadConfig();
 		
+		Set<NamespacedKey> previousRecipes = new HashSet<>();
+		for(CustomItem ci : customItems.values()) 
+		{
+			if(ci.recipe != null) 
+			{
+				previousRecipes.add(ci.recipeKey);
+			}
+		}
+		
 		customItems.clear();
 		
 		FileConfiguration cfg = getConfig();
@@ -286,16 +295,6 @@ public class ElementalFoods extends JavaPlugin
 		pluginPrefix = ChatColor.translateAlternateColorCodes('&', pluginPrefix);
 
 		hasPlaceholderApi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
-		
-		Set<NamespacedKey> previousRecipes = new HashSet<>();
-		
-		for(CustomItem ci : customItems.values()) 
-		{
-			if(ci.recipe != null) 
-			{
-				previousRecipes.add(ci.recipeKey);
-			}
-		}
 		
 		ConfigurationSection itemsSection = cfg.getConfigurationSection("items");
 		Set<String> itemKeys = itemsSection.getKeys(false);
