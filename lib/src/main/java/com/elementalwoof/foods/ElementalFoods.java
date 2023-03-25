@@ -67,6 +67,10 @@ public class ElementalFoods extends JavaPlugin
 		{
 			if(ci.recipe != null)
 			{
+				// HotFix for #2
+				if(ci.recipeKey == null)
+					continue;
+
 				if(ci.recipe.automaticallyUnlock) 
 				{
 					if(!player.hasDiscoveredRecipe(ci.recipeKey)) 
